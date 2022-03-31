@@ -3,6 +3,8 @@
 __app_name__ = "reservationapp"
 __version__ = "0.1.0"
 
+DATETIME_FORMAT = "%d/%m/%y %H:%M" 
+
 (
     SUCCESS,
     DIR_ERROR,

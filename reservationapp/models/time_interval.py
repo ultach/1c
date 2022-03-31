@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from reservationapp.constants import DATETIME_FORMAT
+from reservationapp import DATETIME_FORMAT
 
 
 class TimeInterval:
