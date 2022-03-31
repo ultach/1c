@@ -33,9 +33,3 @@ Commands:
   reservation-list  List all reservation.
 ```
 ````
-
-Adding new reservation
-
-```
-python -m reservationapp add-reservation room_id capacity
-```
