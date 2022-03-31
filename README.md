@@ -1,4 +1,4 @@
-### Set Up the Working Environment
+### Set Up the Project
 
 1. Create virtual environment:
 
