@@ -12,10 +12,10 @@
 
 ### Usage
 
-###### To see list of avalible commends use
+###### To see list of available commands useTo see list of avalible commends use
 
 ````
-(venv) python -m reservationapp --help                        
+(venv) python -m reservationapp --help                
 Usage: reservationapp [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -31,5 +31,8 @@ Commands:
   add-room          Add a new room.
   init              Initialize the schedule database.
   reservation-list  List all reservation.
-```
 ````
+
+#### Example
+
+![test](./run.png)

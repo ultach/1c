@@ -34,7 +34,7 @@ class Reservation:
         if self._room == other._room and self._interval.contains(other._interval):
             return True
 
-        return Fase
+        return False
 
 
 def is_reservation_conflict(reservation_list, new_reservation):
