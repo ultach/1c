@@ -12,7 +12,7 @@
 
 ### Usage
 
-###### To see list of available commands useTo see list of avalible commends use
+###### To see list of available commands use
 
 ````
 (venv) python -m reservationapp --help                
