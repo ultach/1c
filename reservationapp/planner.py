@@ -2,12 +2,18 @@
 from pathlib import Path
 from typing import List, Any, Set, NamedTuple
 
-from .models import Reservation, TimeInterval, Room
+from .models import Reservation, TimeInterval, Room, is_reservation_conflict
 from reservationapp.database import DB_READ_ERROR, DatabaseHandler
+from reservationapp import DUBLICATE_ERROR
 
 
-class CurrentSchedule(NamedTuple):
+class CurrentReservation(NamedTuple):
     reservation: Set[Reservation]
+    error: int
+
+
+class CurrentRoom(NamedTuple):
+    reservation: Set[Room]
     error: int
 
 
@@ -22,13 +28,13 @@ class Planner:
         duration_in_minutes: int,
         title,
         description: List[str],
-    ) -> CurrentSchedule:
+    ) -> CurrentReservation:
         """Add a new reservation to the database."""
 
         description_text = " ".join(description)
         if not description_text.endswith("."):
             description_text += "."
-        
+
         time_interval = TimeInterval(start_time, duration_in_minutes)
         reservation = {
             "RoomId": room_id,
@@ -38,22 +44,41 @@ class Planner:
             "Description": description_text,
         }
 
-        read = self._db_handler.read_reservations()
-        print(read.available_rooms)
+        read = self._db_handler.read_all()
+
         if read.error == DB_READ_ERROR:
-            return CurrentSchedule(reservation, read.error)
+            return CurrentReservation(reservation, read.error)
+
+        if is_reservation_conflict(
+            read.reservation_list, Reservation(room_id, time_interval)
+        ):
+            return CurrentReservation(reservation, DUBLICATE_ERROR)
         read.reservation_list.append(reservation)
-        write = self._db_handler.write_reservations(read.reservation_list)
-        return CurrentSchedule(reservation, write.error)
+        write = self._db_handler.write_all(read.reservation_list, read.room_list)
+        return CurrentReservation(reservation, write.error)
 
+    def add_room(self, room_id: int, capacity: int) -> CurrentRoom:
+        """Add a new reservation to the database."""
+        room = {"RoomId": room_id, "Capacity": capacity}
 
-    def add_room(self, room_id: int, capacity: int):
-        pass
+        read = self._db_handler.read_all()
+
+        if read.error == DB_READ_ERROR:
+            return CurrentRoom(reservation, read.error)
+
+        read.room_list.append(room)
+        write = self._db_handler.write_all(read.reservation_list, read.room_list)
+        return CurrentRoom(room, write.error)
 
     def get_reservation_list(self) -> List:
         """Return the current reservation list."""
-        read = self._db_handler.read_reservations()
+        read = self._db_handler.read_all()
         return read.reservation_list
 
-    def get_recommendation(self, time_interval: TimeInterval):
+    def get_recommendation(
+        self, time_interval: TimeInterval, capacity: int
+    ) -> List[Room]:
+        pass
+
+    def get_available_rooms(self, time_interval: TimeInterval):
         pass

@@ -84,13 +84,36 @@ def add_reservation(
         )
 
 
+@app.command()
+def add_room(
+    room_id: int = typer.Argument(...),
+    capacity: int = typer.Option(45, "--capacity", "-c", min=1),
+):
+    """Add a new room."""
+
+    pl = get_planner()
+    room, error = pl.add_room(room_id, capacity)
+
+    if error:
+        typer.secho(f'Adding room failed with "{ERRORS[error]}"', fg=typer.colors.RED)
+        raise typer.Exit(1)
+
+    else:
+        typer.secho(
+            f"""Room #{room['RoomId']} was added, """ f"""capacity: {capacity}.""",
+            fg=typer.colors.GREEN,
+        )
+
+
 @app.command(name="reservation-list")
-def list_all() -> None:
+def list_reservations() -> None:
     """List all reservation."""
     pl = get_planner()
     reservation_list = pl.get_reservation_list()
     if len(reservation_list) == 0:
-        typer.secho("There are no reservations in the schedule yet.", fg=typer.colors.RED)
+        typer.secho(
+            "There are no reservations in the schedule yet.", fg=typer.colors.RED
+        )
         raise typer.Exit()
     typer.secho("\nreservation list:\n", fg=typer.colors.BLUE, bold=True)
     columns = (

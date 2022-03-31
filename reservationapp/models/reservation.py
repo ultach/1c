@@ -1,9 +1,12 @@
+from . import TimeInterval
+
+
 class Reservation:
-    def __init__(self):
-        self._room = None
-        self._interval = None
-        self._title = None
-        self._description = None
+    def __init__(self, room, interval, title=None, desc=None):
+        self._room = room
+        self._interval = interval
+        self._title = title or None
+        self._description = desc or None
 
     @property
     def description(self):
@@ -26,3 +29,18 @@ class Reservation:
 
     def get_interval_id(self):
         return self._interval.get_id()
+
+    def __eq__(self, other):
+        if self._room == other._room and self._interval.contains(other._interval):
+            return True
+
+        return Fase
+
+
+def is_reservation_conflict(reservation_list, new_reservation):
+    for reservation in reservation_list:
+        time_interval = TimeInterval(reservation["StartTime"], reservation["EndTime"])
+        if new_reservation == Reservation(reservation["RoomId"], time_interval):
+            return True
+
+    return False

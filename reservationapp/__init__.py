@@ -11,12 +11,14 @@ __version__ = "0.1.0"
     DB_WRITE_ERROR,
     JSON_ERROR,
     ID_ERROR,
-) = range(7)
+    DUBLICATE_ERROR,
+) = range(8)
 
 ERRORS = {
     DIR_ERROR: "config directory error",
     FILE_ERROR: "config file error",
     DB_READ_ERROR: "database read error",
     DB_WRITE_ERROR: "database write error",
-    ID_ERROR: "to-do id error",
+    ID_ERROR: "reservation id error",
+    DUBLICATE_ERROR: "object cannot duplicate"
 }
