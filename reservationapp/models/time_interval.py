@@ -34,8 +34,6 @@ class TimeInterval:
         pass
 
     def contains(self, time_interval) -> bool:
-        print(type(time_interval._start), time_interval._end)
-        print(1,self._start <= time_interval._start and time_interval._start <= self._end)
         return (
             (self._start <= time_interval._start) and (time_interval._start <= self._end)
         ) or (self._start <= time_interval._end and time_interval._end <= self._end)
